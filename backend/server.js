@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // -------------------- DATABASE CONNECTION --------------------
 const connectDB = async () =>{
     try{
@@ -25,10 +26,12 @@ const connectDB = async () =>{
 connectDB();
 
 // -------------------- ROUTES --------------------
+app.use("/api/auth", require("./routes/authRoutes")); //login signup logic
+app.use("/api/user", require("./routes/userRoutes")); //verifying token protected routes
 
 // -------------------- ERROR HANDLING --------------------
 //404 handler
-app.use((req,res,next)=>{
+app.use((err,req,res,next)=>{
     console.error(err.stack);
     res.status(500).json({
         message:"something went wrong",
@@ -40,6 +43,6 @@ app.use((req,res,next)=>{
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT,() => {
-    console.log(`SERVER running on port {PORT}`);
+    console.log(`SERVER running on port ${PORT}`);
 
 });
