@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Student = require("../models/Student");
 const jwt = require("jsonwebtoken");
 
 //generate JWT token
@@ -10,7 +11,7 @@ const generateToken = (id) =>{
 //---------signup---------------
 exports.registerUser = async(req,res) => {
     try{
-        const{name,email,password,role}=req.body;
+        const{name,email,password,role,usn,year}=req.body;
 
         //check if user exists
         const userExists = await User.findOne({email});
@@ -26,7 +27,30 @@ exports.registerUser = async(req,res) => {
             password,
             role,
         });
+
+        let studentData = null;
+
+        //if student , create student profile
+        if(role==="student"){
+            studentData = await Student.create({
+                user: user._id,
+                usn,
+                year,
+            })
+        }
+
+        //validation for students
+        if (role === "student" && (!usn || !year)) {
+            return res.status(400).json({
+            message: "USN and year are required for students",
+            });
+        }
+
+
+
+
         res.status(201).json({
+        message: "User registered successfully",
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -68,3 +92,6 @@ exports.loginUser = async(req,res)=>{
         res.status(500).json({message: error.message});
     }
 }
+
+
+//-------------STUDENT---------------
