@@ -33,6 +33,7 @@ app.use("/api/user", require("./routes/userRoutes")); //verifying token protecte
 app.use("/api/rooms", require("./routes/roomRoutes"));
 app.use("/api/complaints", require("./routes/complaintRoutes"));
 app.use("/api/fees", require("./routes/feeRoutes"));
+app.use("/api/notices", require("./routes/noticeRoutes"));
 // -------------------- ERROR HANDLING --------------------
 //404 handler
 app.use((err,req,res,next)=>{
