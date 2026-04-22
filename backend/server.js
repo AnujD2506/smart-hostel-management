@@ -30,7 +30,7 @@ connectDB();
 // -------------------- ROUTES --------------------
 app.use("/api/auth", require("./routes/authRoutes")); //login signup logic
 app.use("/api/user", require("./routes/userRoutes")); //verifying token protected routes
-
+app.use("/api/rooms", require("./routes/roomRoutes"));
 // -------------------- ERROR HANDLING --------------------
 //404 handler
 app.use((err,req,res,next)=>{

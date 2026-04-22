@@ -13,6 +13,13 @@ exports.registerUser = async(req,res) => {
     try{
         const{name,email,password,role,usn,year}=req.body;
 
+        //validation for students
+        if (role === "student" && (!usn || !year)) {
+            return res.status(400).json({
+            message: "USN and year are required for students",
+            });
+        }
+
         //check if user exists
         const userExists = await User.findOne({email});
         if(userExists){
@@ -38,15 +45,6 @@ exports.registerUser = async(req,res) => {
                 year,
             })
         }
-
-        //validation for students
-        if (role === "student" && (!usn || !year)) {
-            return res.status(400).json({
-            message: "USN and year are required for students",
-            });
-        }
-
-
 
 
         res.status(201).json({
